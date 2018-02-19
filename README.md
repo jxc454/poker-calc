@@ -1,2 +1,2 @@
 # poker-calc
-python poker caluclator
+python poker calculator
