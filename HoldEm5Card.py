@@ -1,9 +1,11 @@
+from collections import defaultdict
+
 from Card import HoldEmCard
 from Hand import HoldEmHand, Community
 from Deck import PokerDeck
 from Shoe import HoldEmShoe
 from Calculator import HoldEmCalculator
-from classifiers import check_straight_and_flush
+from classifiers import check_straight_and_flush, check_pairs
 
 if __name__ == '__main__':
     def get_shoe(shoe, card, deck, deck_count=1):
@@ -18,19 +20,28 @@ if __name__ == '__main__':
         [
             [('T', 'h'), ('J', 'h')],
             [('J', 'd'), (2, 'd')],
-            [(2, 's'), (3, 's')]
+            [('K', 'd'), (6, 'd')],
+            [('Q', 's'), (7, 'd')],
+            [('A', 'd'), (4, 'd')],
         ]
-    ]   
+    ]
 
-    print([hand.sort_by_pip().to_string() for hand in hands])
+    hand_scores = defaultdict(int)
+    hand_scores['split'] = 0
+    for hand in hands:
+        hand_scores[hand.to_string()] = 0
 
-    # community = Community(*shoe.take_from_top(5))
-    community = Community(*shoe.deal_specific(('Q', 'h'), ('K', 'h'), ('A', 'h'), (5, 'd'), (7, 'h')))
+    iterations = 2500
+    for index in range(0, iterations):
+        community = Community(*shoe.deal_random(5))
+        calculator = HoldEmCalculator(hands, community, Community)
+        winning_hand = calculator.winner(check_straight_and_flush, check_pairs)
+        shoe.add_cards(*community.cards)
+        
+        if winning_hand:
+            hand_scores[winning_hand.to_string()] += 1
+        else:
+            hand_scores['split'] += 1
 
-    print(community.to_string())
-
-    calculator = HoldEmCalculator(hands, community)
-    winning_hand = calculator.winner(check_straight_and_flush)
-
-    print(winning_hand.to_string() if winning_hand else "no winner")
-    # classifiers
+    for score in hand_scores.items():
+        print('{0}: {1}%'.format(score[0], round(100 * score[1] / float(iterations),1)))

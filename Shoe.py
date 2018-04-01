@@ -31,13 +31,16 @@ class Shoe(ABC):
         for _ in list(range(count)):
             card = None
             while card is None:
-                index = random.randint(0, len(self.cards))
-                card = self.cards(index)
-            
+                index = random.randint(0, len(self.cards) - 1)
+                card = self.cards[index]
+                self.cards[index] = None
             dealt.append(card)
-            self.cards = None
 
         self.cards = [x for x in self.cards if x]
+        return dealt
+
+    def add_cards(self, *args):
+        self.cards += args
 
     def _get_card_from_tuple(self, card_tuple):
         for index, card in enumerate(self.cards):
@@ -68,3 +71,6 @@ class HoldEmShoe(Shoe):
         
     def deal_specific(self, *args):
         return super().deal_specific(*args)
+    
+    def add_cards(self, *args):
+        return super().add_cards(*args)
