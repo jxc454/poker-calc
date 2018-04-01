@@ -38,7 +38,17 @@ class Shoe(ABC):
             self.cards = None
 
         self.cards = [x for x in self.cards if x]
-        
+
+    def _get_card_from_tuple(self, card_tuple):
+        for index, card in enumerate(self.cards):
+            if card.pip_str == card_tuple[0] and card.suit_str == card_tuple[1]:
+                return self.cards.pop(index)
+        raise Exception
+
+    def deal_specific(self, *args):
+        return [self._get_card_from_tuple(card) for card in args]
+
+
 class HoldEmShoe(Shoe):
     def __init__(self, *args):
         super().__init__(*args)
@@ -51,3 +61,8 @@ class HoldEmShoe(Shoe):
 
     def deal_random(self, count):
         return super().deal_random(count)
+
+    def deal_hand_from_tuples(self, hand_class, card_tuple1, card_tuple2):
+        cards = super().deal_specific(card_tuple1, card_tuple2)
+        return hand_class(*cards)
+        

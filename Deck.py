@@ -1,6 +1,6 @@
 from abc import ABC
-import utils
 
+import utils
 from Card import Card
 
 class Deck(ABC):

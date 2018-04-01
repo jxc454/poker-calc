@@ -1,30 +1,30 @@
 from abc import ABC
-from Card import Card
+
 import utils
 
 class Hand(ABC):
-    def __init__(self, pocket=None, community=None):
-        utils.validate_cards_type(cards=pocket)
-        utils.validate_cards_type(cards=community)
+    def __init__(self, *args):
+        utils.validate_cards_type(cards=args)
         
-        self.pocket = pocket
-        self.community = community
-        self.rank = -1
+        self.pocket = args
 
-    def value(self):
-        raise NotImplementedError
+    def to_string(self):
+        return ''.join([card.to_string() for card in self.pocket])
+
+    @classmethod
+    def create_hand_from_tuples(cls, card_class=None, *args):
+        return cls([card_class(*card_tuple) for card_tuple in args])
 
 
 class HoldEmHand(Hand):
-    def __init__(self, pocket=None, community=None):
-        super().__init__(pocket=pocket, community=community)
+    def __init__(self, card1, card2):
+        super().__init__(card1, card2)
+    
+    def to_string(self):
+        return super().to_string()
 
-    def value(self):
-        cards = self.pocket + self.community
-
-        high_card = 0
-
-        for card in cards:
-            high_card = card.pip if card.pip > high_card else high_card
-
-        
+    @classmethod
+    def create_hand_from_tuples(cls, card1, card2, card_class=None):
+        holdem_card1 = card_class(*card1)
+        holdem_card2 = card_class(*card2)
+        return cls(holdem_card1, holdem_card2)
