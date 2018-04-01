@@ -12,3 +12,9 @@ def validate_decks_type(decks=None):
         for deck in decks:
             if not isinstance(deck, Deck):
                 raise Exception
+
+def validate_callable_type(funcs=None):
+    if funcs is not None:
+        for func in funcs:
+            if not callable(func):
+                raise Exception
