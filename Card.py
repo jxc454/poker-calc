@@ -4,10 +4,13 @@ class Card(ABC):
     suit_list = ['h', 's', 'd', 'c']
     pip_list = [2, 3, 4, 5, 6, 7, 8, 9, 'T', 'J', 'Q', 'K', 'A']
 
-    def __init__(self, pip=None, suit=None):
+    def __init__(self, pip=None, suit=None, force=False):
         if pip in Card.pip_list:
             self.pip = Card.pip_list.index(pip)
             self.pip_str = pip
+        elif force == True:
+            self.pip = pip
+            self.pip_str = str(pip)
         else:
             raise Exception
         
@@ -29,8 +32,8 @@ class Card(ABC):
         return cls.pip_list
 
 class HoldEmCard(Card):
-    def __init__(self, pip=None, suit=None):
-        super().__init__(pip, suit)
+    def __init__(self, pip=None, suit=None, force=False):
+        super().__init__(pip, suit, force=force)
 
     @classmethod
     def suits(cls):

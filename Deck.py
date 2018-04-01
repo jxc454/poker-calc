@@ -1,11 +1,9 @@
 from abc import ABC
 
-import utils
 from Card import Card
 
 class Deck(ABC):
     def __init__(self, cards=None):
-        utils.validate_cards_type(cards)
         self.cards = cards
 
     @classmethod

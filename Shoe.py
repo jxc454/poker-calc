@@ -66,3 +66,5 @@ class HoldEmShoe(Shoe):
         cards = super().deal_specific(card_tuple1, card_tuple2)
         return hand_class(*cards)
         
+    def deal_specific(self, *args):
+        return super().deal_specific(*args)
