@@ -18,11 +18,11 @@ if __name__ == '__main__':
 
     hands = [shoe.deal_hand_from_tuples(HoldEmHand, cards[0], cards[1]) for cards in \
         [
-            [('T', 'h'), ('J', 'h')],
-            [('J', 'd'), (2, 'd')],
-            [('K', 'd'), (6, 'd')],
-            [('Q', 's'), (7, 'd')],
-            [('A', 'd'), (4, 'd')],
+            [(3, 'c'), (4, 's')],
+            [('Q', 'h'), (9, 'c')],
+            [(8, 'h'), (8, 'c')],
+            [(3, 'd'), (4, 'c')],
+            [(4, 'd'), (8, 'd')]
         ]
     ]
 
@@ -31,10 +31,11 @@ if __name__ == '__main__':
     for hand in hands:
         hand_scores[hand.to_string()] = 0
 
-    iterations = 2500
+    community = Community(*shoe.deal_random(5))
+    calculator = HoldEmCalculator(hands, community, Community)
+
+    iterations = 8000
     for index in range(0, iterations):
-        community = Community(*shoe.deal_random(5))
-        calculator = HoldEmCalculator(hands, community, Community)
         winning_hand = calculator.winner(check_straight_and_flush, check_pairs)
         shoe.add_cards(*community.cards)
         
@@ -42,6 +43,9 @@ if __name__ == '__main__':
             hand_scores[winning_hand.to_string()] += 1
         else:
             hand_scores['split'] += 1
+        
+        community = Community(*shoe.deal_random(5))
+        calculator.community = community
 
     for score in hand_scores.items():
-        print('{0}: {1}%'.format(score[0], round(100 * score[1] / float(iterations),1)))
+        print('{0}: {1}%'.format(score[0], round(100 * score[1] / float(iterations), 1)))
