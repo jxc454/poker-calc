@@ -18,7 +18,7 @@ def check_straight_and_flush(hand):
 
         pips.sort(reverse=True)
 
-        for index in range(0, len(pips) - 5):
+        for index in range(0, len(pips) - 4):
             if pips[index] - pips[index + 4] == 4:
                 return ('e', ''.join([str(pip).zfill(2) for pip in pips[index:index + 5]]))
         
@@ -36,7 +36,6 @@ def check_straight_and_flush(hand):
                 flush = ('f', ''.join([str(pip).zfill(2) for pip in pips[:5]]))
 
         return flush if flush else False
-        
 
     straight = check_straight(hand)
     flush = check_flush(hand)
