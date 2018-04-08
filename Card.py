@@ -2,7 +2,7 @@ from abc import ABC
 
 class Card(ABC):
     suit_list = ['h', 's', 'd', 'c']
-    pip_list = [2, 3, 4, 5, 6, 7, 8, 9, 'T', 'J', 'Q', 'K', 'A']
+    pip_list = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 
     def __init__(self, pip=None, suit=None, force=False):
         if pip in Card.pip_list:
