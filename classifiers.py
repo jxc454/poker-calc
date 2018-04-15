@@ -55,6 +55,9 @@ def check_straight_and_flush(hand):
 def check_pairs(hand):
     def get_card_value(dbl_dict):
         return lambda x, y: str(dbl_dict[x][y]).zfill(2)
+
+    def get_kicker(pip_count_tuple):
+        return str(max(x[0] for x in pip_count_tuple)).zfill(2)
     
     pips = list([card.pip for card in hand.cards])
 
@@ -68,7 +71,7 @@ def check_pairs(hand):
     get_card = get_card_value(pair_counts)
 
     if pair_counts[0][1] == 4:
-        return ''.join(['h', get_card(0, 0), get_card(1, 0)])
+        return ''.join(['h', get_card(0, 0), get_kicker(pair_counts[1:])])
     elif pair_counts[0][1] == 3:
         if pair_counts[1][1] >= 2:
             return ''.join(['g', get_card(0, 0), get_card(1, 0)])
@@ -76,7 +79,7 @@ def check_pairs(hand):
             return ''.join(['d', get_card(0, 0), get_card(1, 0), get_card(2, 0)])
     elif pair_counts[0][1] == 2:
         if pair_counts[1][1] == 2:
-            return ''.join(['c', get_card(0, 0), get_card(1, 0), get_card(2, 0)])
+            return ''.join(['c', get_card(0, 0), get_card(1, 0), get_kicker(pair_counts[2:])])
         else:
             return ''.join(['b', get_card(0, 0), get_card(1, 0), get_card(2, 0), get_card(3, 0)])
     else:
