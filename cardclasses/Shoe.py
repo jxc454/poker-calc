@@ -17,7 +17,7 @@ class Shoe(ABC):
 
     def take_from_top(self, count):
         if count > len(self.cards):
-            raise Exception
+            raise ValueError
         
         dealt = self.cards[:count]
         self.cards = self.cards[count:]
@@ -25,7 +25,7 @@ class Shoe(ABC):
 
     def deal_random(self, count):
         if count > len(self.cards):
-            raise Exception
+            raise ValueError
         
         dealt = []
         for _ in list(range(count)):
@@ -46,7 +46,7 @@ class Shoe(ABC):
         for index, card in enumerate(self.cards):
             if card.pip_str == card_tuple[0] and card.suit_str == card_tuple[1]:
                 return self.cards.pop(index)
-        raise Exception
+        raise ValueError
 
     def deal_specific(self, *args):
         return [self._get_card_from_tuple(card) for card in args]

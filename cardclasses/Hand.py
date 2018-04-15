@@ -53,7 +53,7 @@ class Hand(ABC):
                     del self.cards[index]
                     return self
         else:
-            raise Exception
+            raise ValueError
         
 
 
@@ -67,6 +67,9 @@ class HoldEmHand(Hand):
 
     @classmethod
     def create_hand_from_tuples(cls, card1, card2, card_class=None):
+        if (card_class is None):
+            raise ValueError
+            
         holdem_card1 = card_class(*card1)
         holdem_card2 = card_class(*card2)
         return cls(holdem_card1, holdem_card2)

@@ -12,13 +12,13 @@ class Card(ABC):
             self.pip = pip
             self.pip_str = str(pip)
         else:
-            raise Exception
+            raise TypeError
         
         if suit in Card.suits():
             self.suit = Card.suit_list.index(suit)
             self.suit_str = suit
         else:
-            raise Exception
+            raise TypeError
 
     def to_string(self):
         return str(Card.pip_list[self.pip]) + Card.suit_list[self.suit]
