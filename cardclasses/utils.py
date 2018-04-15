@@ -1,6 +1,6 @@
-from Card import Card
-from Deck import Deck
-from Hand import Hand
+from cardclasses.Card import Card
+from cardclasses.Deck import Deck
+from cardclasses.Hand import Hand
 
 def validate_cards_type(cards=None):
     if cards is not None:

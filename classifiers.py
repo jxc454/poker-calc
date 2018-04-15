@@ -1,7 +1,7 @@
 from collections import defaultdict
 
-from Card import HoldEmCard
-import utils
+from cardclasses.Card import HoldEmCard
+import cardclasses.utils as utils
 
 def check_straight_and_flush(hand):
     utils.validate_hand_type

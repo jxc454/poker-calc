@@ -1,6 +1,6 @@
 from abc import ABC
 
-import utils
+import cardclasses.utils as utils
 
 class Calculator(ABC):
     def __init__(self, hands, community, hand_class):

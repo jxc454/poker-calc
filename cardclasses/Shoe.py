@@ -1,8 +1,8 @@
 from abc import ABC
 import random
 
-import utils
-from Deck import Deck
+import cardclasses.utils as utils
+from cardclasses.Deck import Deck
 
 class Shoe(ABC):
     def __init__(self, *args):

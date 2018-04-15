@@ -1,11 +1,12 @@
 from collections import defaultdict
 import argparse
+from cardclasses import *
 
-from Card import HoldEmCard
-from Hand import HoldEmHand, Community
-from Deck import PokerDeck
-from Shoe import HoldEmShoe
-from Calculator import HoldEmCalculator
+from cardclasses.Card import HoldEmCard
+from cardclasses.Hand import HoldEmHand, Community
+from cardclasses.Deck import PokerDeck
+from cardclasses.Shoe import HoldEmShoe
+from cardclasses.Calculator import HoldEmCalculator
 from classifiers import check_straight_and_flush, check_pairs
 
 if __name__ == '__main__':

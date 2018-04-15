@@ -1,6 +1,6 @@
 from abc import ABC
 
-from Card import Card
+from cardclasses.Card import Card
 
 class Hand(ABC):
     def __init__(self, *args):
