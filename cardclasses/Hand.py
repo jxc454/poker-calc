@@ -77,6 +77,17 @@ class HoldEmHand(Hand):
 class Community(Hand):
     def __init__(self, *args):
         super().__init__(*args)
+    
+    def to_string(self):
+        return super().to_string()
+
+class HoldEmHandFull(Hand):
+    def __init__(self, holdem_hand, *args):
+        if not isinstance(holdem_hand, HoldEmHand):
+            raise TypeError
+
+        self.pocket = holdem_hand
+        self.cards = holdem_hand.cards + [*args]
 
     def to_string(self):
         return super().to_string()
