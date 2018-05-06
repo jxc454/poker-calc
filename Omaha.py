@@ -3,7 +3,7 @@ import argparse
 from cardclasses import *
 
 from cardclasses.Card import HoldEmCard
-from cardclasses.Hand import HoldEmHand, Community
+from cardclasses.Hand import HoldEmHand, Community, HoldEmHandFull
 from cardclasses.Deck import PokerDeck
 from cardclasses.Shoe import HoldEmShoe
 from cardclasses.Calculator import HoldEmCalculator
@@ -16,7 +16,12 @@ if __name__ == '__main__':
             decks.append(deck.fresh_deck(card))
         return shoe(*decks)
 
-    parser = argparse.ArgumentParser(description="get card odds for Texas Hold 'Em hands.")
+    def compose_hands(hands, community):
+        hands1 = [HoldEmHandFull(hand, *community.cards[0:3]) for hand in hands]
+        hands2 = [HoldEmHandFull(hand, *(community.cards[3:] + community.cards[1:2])) for hand in hands]
+        return hands1 + hands2
+
+    parser = argparse.ArgumentParser(description="get card odds for Omaha hands.")
 
     # get hands
     parser.add_argument('hands', metavar='PokerHand', type=str, nargs='+', help='enter up to 10 starting hands')
@@ -33,7 +38,7 @@ if __name__ == '__main__':
     # deal hands
     hands = [shoe.deal_hand_from_tuples(HoldEmHand, (hand[0:1], hand[1:2]), (hand[2:3], hand[3:])) for hand in args.hands]
     
-    # deal community
+    # deal community start
     community_cards_str = [args.comm[0][i:i + 2] for i in range(0, len(args.comm[0]), 2)] if args.comm else []
     community_tuples = [(card[0:1], card[1:2]) for card in community_cards_str]
     community_start = shoe.deal_specific(*community_tuples)
@@ -46,7 +51,7 @@ if __name__ == '__main__':
 
     community = Community(*(community_start[:] + shoe.deal_random(5 - len(community_start))))
 
-    calculator = HoldEmCalculator(hands, community, Community)
+    calculator = HoldEmCalculator(compose_hands(hands, community))
 
     iterations = 8000
     for index in range(0, iterations):
@@ -54,12 +59,12 @@ if __name__ == '__main__':
         shoe.add_cards(*community.cards[len(community_start):])
         
         if winning_hand:
-            hand_scores[winning_hand.to_string()] += 1
+            hand_scores[winning_hand] += 1
         else:
             hand_scores['split'] += 1
         
         community = Community(*(community_start[:] + shoe.deal_random(5 - len(community_start))))
-        calculator.community = community
+        calculator.hands = compose_hands(hands, community)
 
     for score in hand_scores.items():
         print('{0}: {1}%'.format(score[0], round(100 * score[1] / float(iterations), 1)))
