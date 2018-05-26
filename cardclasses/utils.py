@@ -1,6 +1,7 @@
 from cardclasses.Card import Card
 from cardclasses.Deck import Deck
 from cardclasses.Hand import Hand
+from cardclasses.Hand import HoldEmHandFull
 
 def validate_cards_type(cards=None):
     if cards is not None:
@@ -25,3 +26,6 @@ def validate_hand_type(*args):
         if hand is not None:
             if not isinstance(hand, Hand):
                 raise Exception
+
+def compose_hands(hands, community):
+    return [HoldEmHandFull(hand, *community.cards) for hand in hands]

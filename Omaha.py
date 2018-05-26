@@ -8,6 +8,7 @@ from cardclasses.Deck import PokerDeck
 from cardclasses.Shoe import HoldEmShoe
 from cardclasses.Calculator import HoldEmCalculator
 from classifiers import check_straight_and_flush, check_pairs
+from cardclasses.utils import compose_hands
 
 if __name__ == '__main__':
     def get_shoe(shoe, card, deck, deck_count=1):
@@ -15,11 +16,6 @@ if __name__ == '__main__':
         for _ in list(range(deck_count)):
             decks.append(deck.fresh_deck(card))
         return shoe(*decks)
-
-    def compose_hands(hands, community):
-        hands1 = [HoldEmHandFull(hand, *community.cards[0:3]) for hand in hands]
-        hands2 = [HoldEmHandFull(hand, *(community.cards[3:] + community.cards[1:2])) for hand in hands]
-        return hands1 + hands2
 
     parser = argparse.ArgumentParser(description="get card odds for Omaha hands.")
 
