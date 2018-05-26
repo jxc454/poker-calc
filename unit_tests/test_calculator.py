@@ -8,6 +8,7 @@ from cardclasses.Deck import PokerDeck
 from cardclasses.Hand import HoldEmHand, Community
 from cardclasses.Calculator import HoldEmCalculator
 import classifiers
+from cardclasses.utils import compose_hands
 
 class TestHoldEmCalculator(unittest.TestCase):
     def test_2pair_kicker(self):
@@ -29,7 +30,7 @@ class TestHoldEmCalculator(unittest.TestCase):
             HoldEmCard('A', 's')
         )
 
-        calc = HoldEmCalculator(hands=[hand1, hand2], community=community, hand_class=Community)
+        calc = HoldEmCalculator(compose_hands([hand1, hand2], community))
 
         self.assertIsNone(calc.winner(classifiers.check_pairs))
 
@@ -57,8 +58,8 @@ class TestHoldEmCalculator(unittest.TestCase):
             HoldEmCard('4', 'h')
         )
 
-        calc = HoldEmCalculator(hands=[hand1, hand2, hand3], community=community, hand_class=Community)
-        self.assertEqual(calc.winner(classifiers.check_pairs), hand3)
+        calc = HoldEmCalculator(compose_hands([hand1, hand2, hand3], community))
+        self.assertEqual(calc.winner(classifiers.check_pairs), hand3.to_string())
 
     def test_FH_split(self):
         hand1 = HoldEmHand.create_hand_from_tuples(
@@ -84,7 +85,7 @@ class TestHoldEmCalculator(unittest.TestCase):
             HoldEmCard('2', 'h')
         )
 
-        calc = HoldEmCalculator(hands=[hand1, hand2, hand3], community=community, hand_class=Community)
+        calc = HoldEmCalculator(compose_hands([hand1, hand2, hand3], community))
         self.assertIsNone(calc.winner(classifiers.check_pairs))
 
 if __name__ == '__main__':
